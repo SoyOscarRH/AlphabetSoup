@@ -17,6 +17,9 @@ export default class App extends React.Component {
         super(props)
         this.state = {
             WordsType: "Animales",
+            EnableHints: true,
+            TemporalBoardSize: 12,
+            BoardSize: 12,
             Words: {
                 Animales: [
                     "perro",
@@ -110,17 +113,48 @@ export default class App extends React.Component {
                         <li><a className="subheader">General</a></li>
                         <li>
                             <a className="waves-effect"
-                                onClick={(e) => M.Modal.getInstance(document.getElementById('SubmissionModal')).open()}>
-                                <i className="material-icons small">create</i>
-                                Cambiar Cadenas
+                                onClick={
+                                    () => {
+                                        this.setState(preState => {
+                                            return {EnableHints: !preState.EnableHints}
+                                        })
+                                    }
+                                }>
+                                <i className="material-icons small">free_breakfast</i>
+                                Activa Pistas
                             </a>
                         </li>
                         <li>
-                            <a className="waves-effect"
-                                onClick={(e) => M.Modal.getInstance(document.getElementById('TutorialModal')).open()}>
-                                <i className="material-icons">info</i>
-                                Tutorial de Uso
-                            </a>
+                            <div className="row">
+                                <div className="input-field col s6 offset-s1">
+                                    <input 
+                                        type      = "number"
+                                        className = "validate"
+                                        step      = "1"
+                                        min       = "8"
+                                        max       = "20"
+                                        value     = {this.state.TemporalBoardSize}
+                                        onChange  = {(e) => this.setState({TemporalBoardSize: e.target.value})}
+                                    />
+                                    <label htmlFor="first_name">Tamaño del Tablero</label>
+                                </div>
+                                <div className="col s2 vertical-align">
+                                    <a 
+                                        className = "waves-effect waves-light btn green"
+                                        onClick   = {() => {
+                                            const Value = Number(this.state.TemporalBoardSize)
+
+                                            if (Number.isInteger(Value) && Value > 8 && Value < 21)
+                                                this.setState({BoardSize: Number(this.state.TemporalBoardSize)})
+                                            else
+                                                M.toast({html: "Error: Tamaño no válido"})
+                                            }
+                                        }
+                                    >
+                                        <i className="material-icons small">check</i>
+                                    </a>
+                                </div>
+                            </div>
                         </li>
                     </ul>
 
@@ -136,9 +170,10 @@ export default class App extends React.Component {
                                 <AlphabetSoup 
                                     WordsType      = {this.state.WordsType} 
                                     Words          = {this.state.Words[this.state.WordsType]}
-                                    VerticalSize   = {12}
-                                    HorizontalSize = {12}
+                                    VerticalSize   = {this.state.BoardSize}
+                                    HorizontalSize = {this.state.BoardSize}
                                     NumberOfTries  = {250}
+                                    EnableHints    = {this.state.EnableHints}
                                 />
                             </div>
                         </div>

@@ -10,15 +10,49 @@ import './OverFlowButHide.css'
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 export default class AlphabetSoup extends React.Component {
 
+
+
+
     // =================================================
     // ========        CONSTRUCTOR AND STATE     =======
     // =================================================
     constructor(props) {
         super(props)
 
+
         const HorizontalSize = this.props.HorizontalSize
         const VerticalSize = this.props.VerticalSize
         const NumberOfWords = this.props.Words.length
+
+        // CREATE THE BOARD 
+        let WordsInfo = []
+
+        let Board = Array(VerticalSize)
+        for (let i = 0; i < VerticalSize; i++) {
+            Board[i] = Array(HorizontalSize)
+            for (let j = 0; j < HorizontalSize; j++) {
+                Board[i][j] = {IsWord: false, WordNumber: [], WordIndex: [], Letter: '0', Pressed: false}
+            }
+        }
+
+        this.state = {
+            Board: Board,
+            WordsInfo: WordsInfo,
+            HorizontalSize: this.props.HorizontalSize,
+            VerticalSize: this.props.VerticalSize,
+            FirstTime: true,
+        }
+
+    }
+
+    static getDerivedStateFromProps (props, state) {
+
+        if (props.HorizontalSize == state.HorizontalSize && props.VerticalSize == state.VerticalSize && !state.FirstTime)
+            return null
+
+        const HorizontalSize = props.HorizontalSize
+        const VerticalSize   = props.VerticalSize
+        const NumberOfWords  = props.Words.length
 
         // CREATE THE BOARD 
         let Board = Array(VerticalSize)
@@ -29,14 +63,14 @@ export default class AlphabetSoup extends React.Component {
             }
         }
 
-        let Words = this.props.Words.sort( (a, b) => b.length - a.length)
+        let Words = props.Words.sort( (a, b) => b.length - a.length)
         let WordsInfo = []
 
         let WordIndex = 0
         let WordAddedIndex = 0
         let NumberOfTries = 0
 
-        while (WordAddedIndex < NumberOfWords && NumberOfTries < this.props.NumberOfTries) {
+        while (WordAddedIndex < NumberOfWords && NumberOfTries < props.NumberOfTries) {
 
             if (WordIndex >= NumberOfWords) WordIndex = 0
             if (WordsInfo.some(Element => Element.Word === Words[WordIndex])) {
@@ -45,8 +79,8 @@ export default class AlphabetSoup extends React.Component {
                 continue
             }
 
-            const StartVerticalIndex   = Math.floor(Math.random() * this.props.VerticalSize)
-            const StartHorizontalIndex = Math.floor(Math.random() * this.props.HorizontalSize)
+            const StartVerticalIndex   = Math.floor(Math.random() * VerticalSize)
+            const StartHorizontalIndex = Math.floor(Math.random() * HorizontalSize)
 
             let Style = Math.floor(Math.random() * 3)
 
@@ -142,12 +176,10 @@ export default class AlphabetSoup extends React.Component {
             }
         }
 
-
-        this.state = {
-            Board: Board,
-            WordsInfo: WordsInfo,
-        }
+        return {Board: Board, WordsInfo: WordsInfo, HorizontalSize: props.HorizontalSize, VerticalSize: props.VerticalSize, FirstTime: false}
     }
+
+
 
 
 
@@ -158,7 +190,6 @@ export default class AlphabetSoup extends React.Component {
     render () {
 
         const Press = (i, j, Element) => {
-            console.log(`Me pasaron i ${i}, j ${j}`)
             const NewBoard = [...this.state.Board]
             NewBoard[i][j].Pressed = !NewBoard[i][j].Pressed
 
@@ -200,10 +231,11 @@ export default class AlphabetSoup extends React.Component {
                 return (
                     <td key={`i=${i} j=${j}`}>
                         <Letter 
-                            Element = {Element.Letter} 
-                            Hint    = {Element.IsWord? (Element.WordNumber.length > 1? "Multi" :"Normal"): "None"} 
-                            Type    = {CompleteWord? "Complete": (Element.Pressed? "Pressed": "Normal")} 
-                            onClick = {() => Press(i, j, Element)}
+                            Element     = {Element.Letter}
+                            Hint        = {Element.IsWord? (Element.WordNumber.length > 1? "Multi" :"Normal"): "None"} 
+                            EnableHints = {this.props.EnableHints}
+                            Type        = {CompleteWord? "Complete": (Element.Pressed? "Pressed": "Normal")} 
+                            onClick     = {() => Press(i, j, Element)}
                         />
                     </td>
                 )
@@ -265,21 +297,20 @@ export default class AlphabetSoup extends React.Component {
 }
 
 
-
-
 function Letter (props) {
 
-    if (props.Type === "Complete") console.log("Wii")
     let Intensity = 1
 
     if      (props.Hint === "Multi")  Intensity = 0
     else if (props.Hint === "Normal") Intensity = 2
     else if (props.Hint === "None")   Intensity = 3
 
+    if (!props.EnableHints) Intensity = 2
+
     let Color = "light-blue"
     if      (props.Type === "Normal")   Color = "blue"
     else if (props.Type === "Pressed")  Color = "purple", Intensity = 2
-    else if (props.Type === "Complete") Color = "light-green"
+    else if (props.Type === "Complete") Color = "green"
 
     return (
         <a 
