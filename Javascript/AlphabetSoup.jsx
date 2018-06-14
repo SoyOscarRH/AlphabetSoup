@@ -52,7 +52,7 @@ export default class AlphabetSoup extends React.Component {
 
         const HorizontalSize = props.HorizontalSize
         const VerticalSize   = props.VerticalSize
-        const NumberOfWords  = props.Words.length
+        const NumberOfWords  = 8
 
         // CREATE THE BOARD 
         let Board = Array(VerticalSize)

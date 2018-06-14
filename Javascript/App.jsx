@@ -18,8 +18,8 @@ export default class App extends React.Component {
         this.state = {
             WordsType: "Animales",
             EnableHints: true,
-            TemporalBoardSize: 12,
-            BoardSize: 12,
+            TemporalBoardSize: 10,
+            BoardSize: 10,
             Words: {
                 Animales: [
                     "perro",
@@ -121,7 +121,7 @@ export default class App extends React.Component {
                                     }
                                 }>
                                 <i className="material-icons small">free_breakfast</i>
-                                Activa Pistas
+                                {this.state.EnableHints? "Desabilita": "Habilita"} Pistas
                             </a>
                         </li>
                         <li><br /></li>
@@ -146,7 +146,7 @@ export default class App extends React.Component {
                                         onClick   = {() => {
                                             const Value = Number(this.state.TemporalBoardSize)
 
-                                            if (Number.isInteger(Value) && Value > 8 && Value < 21)
+                                            if (Number.isInteger(Value) && Value > 7 && Value < 21)
                                                 this.setState({BoardSize: Number(this.state.TemporalBoardSize)})
                                             else
                                                 M.toast({html: "Error: Tamaño no válido"})
