@@ -176,11 +176,14 @@ export default class AlphabetSoup extends React.Component {
             }
         }
 
-        return {Board: Board, WordsInfo: WordsInfo, HorizontalSize: props.HorizontalSize, VerticalSize: props.VerticalSize, FirstTime: false}
+        return {
+            Board: Board, 
+            FirstTime: false,
+            WordsInfo: WordsInfo, 
+            VerticalSize: props.VerticalSize, 
+            HorizontalSize: props.HorizontalSize, 
+        }
     }
-
-
-
 
 
 
@@ -207,8 +210,9 @@ export default class AlphabetSoup extends React.Component {
                     }
                 })
 
-                if (CompleteWord)
+                if (CompleteWord) {
                     M.toast({html: `Nueva palabra encontrada: ${this.state.WordsInfo[CompleteWordIndex].Word.toUpperCase()}`})
+                }
             }
 
             this.setState({Board: NewBoard, WordsInfo: NewWordsInfo})
@@ -260,14 +264,31 @@ export default class AlphabetSoup extends React.Component {
                     </h4>
                     <br />
 
-                    <div className="row" id="CardInfo" style={{'overflowX': 'scroll'}}>
+                    <div className="row">
                         <div className="col s10 offset-s1 blue-grey-text darken-2-text">
 
-                            Las siguientes palabras estas:
-                            <ul>
-                                {this.state.WordsInfo.map(Element => <li key={Element.Word}>{Element.Word}</li>)}
-                            </ul>
+                            <h5>Las palabras que te faltan son:</h5>
 
+                            <div className="row" style={{'overflowX': 'scroll'}} id="CardInfo">
+                                <table className="browser-default">
+                                    <tbody>
+                                        <tr>
+                                            {
+                                            this.state.WordsInfo.filter(Element => !Element.Found.every(e => e)).map(Element => {
+                                                return (
+                                                    <td key={Element.Word}>
+                                                        <div className="card-panel center-align" style={{width: "9rem"}} >
+                                                            <img src={"Distribution/perro.jpg"} style={{width: "80%"}}/>
+                                                            <span><strong>{Element.Word.toUpperCase()}</strong></span>
+                                                        </div>
+                                                    </td>
+                                                )
+                                            })
+                                            }
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 

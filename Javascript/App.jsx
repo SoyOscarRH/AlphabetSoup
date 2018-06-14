@@ -124,6 +124,8 @@ export default class App extends React.Component {
                                 Activa Pistas
                             </a>
                         </li>
+                        <li><br /></li>
+                        <li><a className="subheader">Personalización</a></li>
                         <li>
                             <div className="row">
                                 <div className="input-field col s6 offset-s1">
@@ -140,7 +142,7 @@ export default class App extends React.Component {
                                 </div>
                                 <div className="col s2 vertical-align">
                                     <a 
-                                        className = "waves-effect waves-light btn green"
+                                        className = "waves-effect waves-light btn-floating green"
                                         onClick   = {() => {
                                             const Value = Number(this.state.TemporalBoardSize)
 
