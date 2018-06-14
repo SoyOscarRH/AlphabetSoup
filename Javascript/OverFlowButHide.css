@@ -1,0 +1,8 @@
+#CardTable::-webkit-scrollbar { 
+    display: none;
+}
+
+#CardInfo::-webkit-scrollbar { 
+    display: none;
+}
+
