@@ -10,23 +10,17 @@ import './OverFlowButHide.css'
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 export default class AlphabetSoup extends React.Component {
 
-
-
-
     // =================================================
     // ========        CONSTRUCTOR AND STATE     =======
     // =================================================
     constructor(props) {
         super(props)
 
-
         const HorizontalSize = this.props.HorizontalSize
         const VerticalSize = this.props.VerticalSize
         const NumberOfWords = this.props.Words.length
 
         // CREATE THE BOARD 
-        let WordsInfo = []
-
         let Board = Array(VerticalSize)
         for (let i = 0; i < VerticalSize; i++) {
             Board[i] = Array(HorizontalSize)
@@ -37,7 +31,8 @@ export default class AlphabetSoup extends React.Component {
 
         this.state = {
             Board: Board,
-            WordsInfo: WordsInfo,
+            WordsInfo: [],
+            Category: this.props.Category,
             HorizontalSize: this.props.HorizontalSize,
             VerticalSize: this.props.VerticalSize,
             FirstTime: true,
@@ -47,12 +42,13 @@ export default class AlphabetSoup extends React.Component {
 
     static getDerivedStateFromProps (props, state) {
 
-        if (props.HorizontalSize == state.HorizontalSize && props.VerticalSize == state.VerticalSize && !state.FirstTime)
+        if (props.HorizontalSize == state.HorizontalSize && props.Category === state.Category && props.VerticalSize == state.VerticalSize && !state.FirstTime) 
             return null
 
         const HorizontalSize = props.HorizontalSize
         const VerticalSize   = props.VerticalSize
         const NumberOfWords  = 8
+
 
         // CREATE THE BOARD 
         let Board = Array(VerticalSize)
@@ -64,11 +60,14 @@ export default class AlphabetSoup extends React.Component {
         }
 
         let Words = props.Words.sort( (a, b) => b.length - a.length)
+
         let WordsInfo = []
 
         let WordIndex = 0
         let WordAddedIndex = 0
         let NumberOfTries = 0
+
+
 
         while (WordAddedIndex < NumberOfWords && NumberOfTries < props.NumberOfTries) {
 
@@ -83,6 +82,8 @@ export default class AlphabetSoup extends React.Component {
             const StartHorizontalIndex = Math.floor(Math.random() * HorizontalSize)
 
             let Style = Math.floor(Math.random() * 3)
+
+
 
             for (let i = 0; i < 3; i++) {
                 
@@ -109,6 +110,7 @@ export default class AlphabetSoup extends React.Component {
                         break
                     }
                 }
+
                 // Vertical
                 else if (Style === 1) {
                     const Possible = Words[WordIndex].split('').every(function (element, index) {
@@ -132,18 +134,24 @@ export default class AlphabetSoup extends React.Component {
                         break
                     }
                 }
+
                 // Diagonal
                 else {
-                    const Possible = Words[WordIndex].split('').every(function (element, index) {
-                        if (index + StartHorizontalIndex >= HorizontalSize) 
-                            return false 
-                        else if (Board[StartVerticalIndex + index][StartHorizontalIndex + index].Letter !== Words[WordIndex].charAt(index) 
-                            && Board[StartVerticalIndex + index][StartHorizontalIndex + index].Letter !== '0')
-                            return false
-                        else if (Board[StartVerticalIndex + index][StartHorizontalIndex + index].Letter !== Words[WordIndex].charAt(index))
-                            return false
-                        else return true
-                    })
+
+                    let Possible = false
+                    try {
+                        Possible = Words[WordIndex].split('').every(function (element, index) {
+                            if (index + StartHorizontalIndex >= HorizontalSize) 
+                                return false 
+                            else if (Board[StartVerticalIndex + index][StartHorizontalIndex + index].Letter !== Words[WordIndex].charAt(index) 
+                                && Board[StartVerticalIndex + index][StartHorizontalIndex + index].Letter !== '0')
+                                return false
+                            else if (Board[StartVerticalIndex + index][StartHorizontalIndex + index].Letter !== Words[WordIndex].charAt(index))
+                                return false
+                            else return true
+                        })
+                    }
+                    catch (e) {Possible = false}
 
                     if (Possible) {
                         Words[WordIndex].split('').forEach(function (element, index) {
@@ -176,10 +184,12 @@ export default class AlphabetSoup extends React.Component {
             }
         }
 
+
         return {
-            Board: Board, 
+            Board: Board,
+            Category: props.Category,
             FirstTime: false,
-            WordsInfo: WordsInfo, 
+            WordsInfo: WordsInfo,
             VerticalSize: props.VerticalSize, 
             HorizontalSize: props.HorizontalSize, 
         }
@@ -260,7 +270,7 @@ export default class AlphabetSoup extends React.Component {
                 {/*=====================================================*/}
                 <div className="card-panel grey lighten-5">
                     <h4 className="center-align blue-grey-text text-darken-2">
-                        <strong>{this.props.WordsType}</strong>: Sopa de Letras 
+                        <strong>{this.props.Category}</strong>: Sopa de Letras 
                     </h4>
                     <br />
 
@@ -278,7 +288,7 @@ export default class AlphabetSoup extends React.Component {
                                                 return (
                                                     <td key={Element.Word}>
                                                         <div className="card-panel center-align" style={{width: "9rem"}} >
-                                                            <img src={"Distribution/perro.jpg"} style={{width: "80%"}}/>
+                                                            <img src={`Distribution/${this.props.Category}/${Element.Word}${this.props.Category === "Paises"? ".jpg": ".jpeg"}`} style={{width: "80%"}}/>
                                                             <span><strong>{Element.Word.toUpperCase()}</strong></span>
                                                         </div>
                                                     </td>

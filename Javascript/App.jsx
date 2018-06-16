@@ -16,20 +16,19 @@ export default class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            WordsType: "Animales",
+            WordsType: "Paises",
             EnableHints: true,
             TemporalBoardSize: 10,
             BoardSize: 10,
             Words: {
                 Animales: [
                     "perro",
-                    "gato",
-                    "ave",
                     "pajaro",
+                    "ave",
+                    "aguila",
                     "lobo",
                     "buho",
-                    "ballenas",
-                    "patos",
+                    "ballena",
                     "gallina",
                     "cocodrilo",
                     "pez",
@@ -39,9 +38,50 @@ export default class App extends React.Component {
                     "rana",
                     "gusano",
                     "leon",
-                    "halcon",
                     "mosco",
                     "rata",
+                ],
+                Paises: [
+                    "alemania",
+                    "argentina",
+                    "australia",
+                    "canada",
+                    "chile",
+                    "china",
+                    "españa",
+                    "francia",
+                    "india",
+                    "inglaterra",
+                    "iran",
+                    "italia",
+                    "japon",
+                    "mexico",
+                    "peru",
+                    "rusia",
+                    "sudafrica",
+                    "turquia",
+                    "usa",
+                ],
+                Frutas: [
+                    "aguacate",
+                    "coco",
+                    "durazno",
+                    "fresa",
+                    "granada",
+                    "guayaba",
+                    "higo",
+                    "wiki",
+                    "limon",
+                    "mandarina",
+                    "mango",
+                    "manzana",
+                    "naranja",
+                    "papaya",
+                    "piña",
+                    "platano",
+                    "sandia",
+                    "toronja",
+                    "uva",
                 ]
             }
         }
@@ -110,6 +150,31 @@ export default class App extends React.Component {
                             </h5>
                             <br />
                         </li>
+                        <li><a className="subheader">Tipos</a></li>
+                        <li>
+                            <a className="waves-effect"
+                                onClick={() => this.setState({WordsType: "Animales"})}
+                            >
+                                <i className="material-icons small">pets</i>
+                                Animales
+                            </a>
+                        </li>
+                        <li>
+                            <a className="waves-effect"
+                                onClick={() => this.setState({WordsType: "Paises"})}
+                            >
+                                <i className="material-icons small">map</i>
+                                Paises
+                            </a>
+                        </li>
+                        <li>
+                            <a className="waves-effect"
+                                onClick={() => this.setState({WordsType: "Frutas"})}
+                            >
+                                <i className="material-icons small">kitchen</i>
+                                Frutas
+                            </a>
+                        </li>
                         <li><a className="subheader">General</a></li>
                         <li>
                             <a className="waves-effect"
@@ -160,6 +225,8 @@ export default class App extends React.Component {
                         </li>
                     </ul>
 
+
+
                 </header>
 
                 {/*+++++++++++++++++++++++++++++++++++++++++++++++++++++*/}
@@ -170,12 +237,12 @@ export default class App extends React.Component {
                         <div className="row">
                             <div className="s12">
                                 <AlphabetSoup 
-                                    WordsType      = {this.state.WordsType} 
                                     Words          = {this.state.Words[this.state.WordsType]}
                                     VerticalSize   = {this.state.BoardSize}
                                     HorizontalSize = {this.state.BoardSize}
                                     NumberOfTries  = {250}
                                     EnableHints    = {this.state.EnableHints}
+                                    Category       = {this.state.WordsType}
                                 />
                             </div>
                         </div>
