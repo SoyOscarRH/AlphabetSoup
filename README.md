@@ -2,10 +2,18 @@
 
 Simple game made with React to make people happy
 
-You can try it for yourself [here](http://SoyOscarRH.github.io/AlphabetSoup)
+## Demo
+
+[You can try it for yourself clicking here](http://SoyOscarRH.github.io/AlphabetSoup)
+
+## Get the Source Code
+
+
+[Component Container](Javascript/App.jsx)
+[AlphabetSoup](Javascript/AlphabetSoup.jsx)
+
 
 ## Screenshots
-
 
 <img src="Graphics/Showcase0.png" width="85%">
 
@@ -15,6 +23,3 @@ You can try it for yourself [here](http://SoyOscarRH.github.io/AlphabetSoup)
 
 <img src="Graphics/Showcase3.png" width="45%">
 
-
-## Get the Source Code
-[Click me](Javascript/)
