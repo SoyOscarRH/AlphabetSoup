@@ -8,9 +8,8 @@ Simple game made with React to make people happy
 
 ## Get the Source Code
 
-
-[Component Container](Javascript/App.jsx)
-[AlphabetSoup](Javascript/AlphabetSoup.jsx)
+* [Component Container](Javascript/App.jsx)
+* [AlphabetSoup](Javascript/AlphabetSoup.jsx)
 
 
 ## Screenshots
